@@ -1,10 +1,10 @@
-import { test, expect } from '@playwright/test';
+const { test, expect } = require('@playwright/test');
 const CatalogPage = require('../page-objects/catalog/catalog.page');
 const { searchTerms, validLengthSearchTerms, invalidLengthSearchTerms } = require('../data/test-data');
 
 
-test.describe('Browse products - Search Functionality', () => {
-    test.describe.configure({ mode: 'parallel', retries: 2, timeout: 10000});
+test.describe('Browse products - Search Functionality', {tag: '@regression'}, () => {
+    test.describe.configure({ mode: 'parallel'});
     let catalog;
   
     test.beforeEach(async ({ page }) => {
@@ -14,8 +14,8 @@ test.describe('Browse products - Search Functionality', () => {
 
     test.describe('Validation Rules', () => {
         
-        for (const { term, scenario } of searchTerms) {
-            test(`UC-5 [${scenario}] Search using valid keyword: "${term}“`, {tag: '@tag'}, async ({ page }) => {
+        for (const [index, { term, scenario }] of searchTerms.entries()) {
+            test(`UC-5 [${scenario}] Search using valid keyword: "${term}“`, {tag: index === 0 ? ['@smoke'] : []}, async ({ page }) => {
                 await catalog.search.searchFor(term);
                 await expect (catalog.grid.searchCompleted).toBeAttached();    
             });
@@ -30,7 +30,7 @@ test.describe('Browse products - Search Functionality', () => {
         }
 
         for (const {scenario, length, term} of invalidLengthSearchTerms){
-            test(`UC-7 [${scenario}] Search rejects "${term}" (${length} chars)`, async ({ page }) => {
+            test(`UC-7 [${scenario}] Search rejects "${term}" (${length} chars)`, {tag: '@negative'}, async ({ page }) => {
                 await catalog.search.searchFor(term);
                 await expect(catalog.grid.searchCaption).not.toBeAttached();
             });
@@ -48,7 +48,7 @@ test.describe('Browse products - Search Functionality', () => {
             await expect(catalog.filters.ecoFriendlyFilter).not.toBeChecked();
         });
       
-        test('UC-9: Restore the original product view by clearing the search', async ({ page }) => {
+        test('UC-9: Restore the original product view by clearing the search', {tag: '@smoke'}, async ({ page }) => {
             await catalog.search.searchFor("hammer");
             await expect (catalog.grid.searchCompleted).toBeAttached();
             await expect (catalog.grid.searchCaption).toHaveText("hammer");
