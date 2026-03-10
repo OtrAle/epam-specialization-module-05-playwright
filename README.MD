@@ -46,11 +46,11 @@ Run from the project root directory:
 
 | Path | Purpose |
 |------|----------|
-| `/data/test-data.js` | Centralized test data and scenarios. |
-| `/tests/search.spec.js` | Test spec for the search functionallity. |
-| `/page-objects/` | Page Objects for selectors and search related actions. |
+| `/src/data/test-data.js` | Centralized test data and scenarios. |
+| `/src/tests/search.spec.js` | Test spec for the search functionallity. |
+| `/src/page-objects/` | Page Objects for selectors and search related actions. |
 | `/playwright.config.js` | Playwright configuration file. |
-| `package.json` | Dependencies and npm scripts. |
+| `/package.json` | Dependencies and npm scripts. |
 | `/playwright-report` and `/test-results` | Created when running test, contains HTML report and JSON files. |
 
 ##  Test Scenarios Covered
