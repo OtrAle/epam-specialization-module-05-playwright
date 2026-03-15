@@ -12,6 +12,10 @@ test.describe('Browse products - Search Functionality', {tag: '@regression'}, ()
         await catalog.open();
     });
 
+    test.afterEach(async ({ page }) => {
+        await page.context().clearCookies();
+    });
+
     test.describe('Validation Rules', () => {
         
         for (const [index, { term, scenario }] of searchTerms.entries()) {
